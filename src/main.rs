@@ -1,5 +1,6 @@
 use std::path::Path;
 use std::env;
+use std::fs;
 fn main() {
     // ルートディレクトリの宣言
     let root = Path::new("/");
@@ -28,5 +29,12 @@ fn main() {
         None => println!("{key} is not defined in the environment.")
     }
 
-    
+    // old_currentを参照して、ディレクトリの中身を取得
+    let dir = fs::read_dir(&old_current).unwrap();
+    // 複数を取得するためにfor文で回す
+    for file in dir {
+        // エラーハンドリングしてから、PathBufに変換、displayで表示
+        println!("{}", file.unwrap().path().display());
+    }
+
 }
