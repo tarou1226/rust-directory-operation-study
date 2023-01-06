@@ -1,6 +1,8 @@
+use std::path;
 use std::path::Path;
 use std::env;
 use std::fs;
+
 fn main() {
     // ルートディレクトリの宣言
     let root = Path::new("/");
@@ -36,5 +38,15 @@ fn main() {
         // エラーハンドリングしてから、PathBufに変換、displayで表示
         println!("{}", file.unwrap().path().display());
     }
+
+    // パスを区切る文字なのかを判定する linuxの場合は'/'
+    match path::is_separator('💕') {
+        true => println!("ok"),
+        false => println!("no"),
+    }
+
+    // 処理の終了方法 linux 0(00000000) windows 256(11111111)
+    println!("finished process");
+    std::process::exit(0)
 
 }
