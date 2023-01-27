@@ -1,7 +1,4 @@
-use std::path;
-use std::path::Path;
-use std::env;
-use std::fs;
+use std::{fs, path::{Path, self}, env};
 
 fn main() {
     // ルートディレクトリの宣言
@@ -19,13 +16,23 @@ fn main() {
     let young_current = env::current_dir().unwrap();
     println!("young current dir -> {}", young_current.display());
 
+    // 環境変数"HELLO"の設定を行う
+    let key = "HELLO";
+    // "/bin"と"/usr"をUnix形式で結合
+    let values = [Path::new("/bin"), Path::new("/usr")];
+    let path_os_string = env::join_paths(values).expect("missed");
+    // "HELLO"にパスを通す
+    env::set_var(key, path_os_string);
+    // 出力
+    println!("{:?}", env::var_os(key).expect("missed"));
+
     // 環境変数の取得 （PATH）の取得を行っている
     let key = "PATH";
     match env::var_os(key) {
         Some(paths) => {
             // 複数の場合は改行しながら、splitで分割、全て表示
             for path in env::split_paths(&paths) {
-                println!("'{}'", path.display());
+                println!("{}", path.display());
             }
         }
         None => println!("{key} is not defined in the environment.")
